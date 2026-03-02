@@ -6,7 +6,7 @@
 
 import numpy as np
 import trimesh
-from urdfpy import URDF
+from yourdfpy import URDF
 from pathlib import Path 
 import itertools
 import open3d as o3d

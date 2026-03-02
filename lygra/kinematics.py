@@ -6,7 +6,7 @@
 
 import numpy as np
 import trimesh
-from urdfpy import URDF
+from yourdfpy import URDF
 from pathlib import Path 
 import itertools
 import math
@@ -72,18 +72,18 @@ class KinematicsTree:
 
     @staticmethod
     def build_from_urdf(urdf_path, active_joint_names=None):
-        urdf = URDF.load(urdf_path)
+        urdf = URDF.load(urdf_path, load_meshes=False, build_scene_graph=False, load_collision_meshes=False)
         tree = KinematicsTree()
-        for l in urdf.links:
+        for l in urdf.robot.links:
             tree.add_link(l.name)
 
-        for j in urdf.joints:
+        for j in urdf.robot.joints:
             tree.add_joint(
-                j.name, 
-                parent_name=j.parent, 
-                child_name=j.child, 
-                joint_type=j.joint_type,
-                axis=j.axis, 
+                j.name,
+                parent_name=j.parent,
+                child_name=j.child,
+                joint_type=j.type,
+                axis=j.axis,
                 limit=j.limit,
                 origin=j.origin
             )
@@ -91,8 +91,8 @@ class KinematicsTree:
             tree.add_edge(j.name, j.child)
 
         if active_joint_names is None:
-            active_joints = urdf._actuated_joints                       # this will be the indexing order.
-            active_joint_names = [j.name for j in active_joints] 
+            active_joints = urdf.actuated_joints
+            active_joint_names = [j.name for j in active_joints]
 
         tree.set_active_joints(active_joint_names)
         return tree

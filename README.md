@@ -29,14 +29,21 @@ Available environments:
 - conda_py38.yml: Python 3.8 + PyTorch 2.4.1 (for legacy systems)
 
 #### Option 2. Lightweight PIP Installation (Minimal)
-Not sure if you are tired of setting up a new heavy-weight environment for every new thing. 
+Not sure if you are tired of setting up a new heavy-weight environment for every new thing.
 
-If you prefer a minimal setup and already have Python 3.8/3.9 and pytorch installed:
+If you prefer a minimal setup and already have Python 3.9+ and pytorch installed:
 ```
-pip install open3d==0.19.0 urdfpy==0.0.22 trimesh==4.9.0
-pip install networkx==3.2.1
+pip install open3d==0.19.0 yourdfpy==0.0.60 trimesh==4.9.0
+pip install networkx==3.6.1
 ```
 Done. (Do not merge these pip install into one line)
+
+#### Option 3. PIP Installation using requirements.txt
+If you want to install the requirement using `pip`:
+```
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+pip install -r requirements.txt
+```
 
 
 ### Step 2. Setup CUDA Binaries
@@ -106,7 +113,7 @@ For the grasp synthesis with grippers, consider using specialized approaches for
 - If you encounter "Package X not found" errors, simply run ``pip install X``.
 -  If you find any error message containing ```networkx```, just run
 ```
-pip install networkx==3.2.1
+pip install networkx==3.6.1
 ```
 
 For other problems, leave an issue or email me ``zhaohengyin@cs.berkeley.edu`` (I can be quite busy, but I’ll do my best to respond as soon as I can).

@@ -10,7 +10,7 @@ import open3d as o3d
 import torch
 import numpy as np
 import trimesh
-from urdfpy import URDF
+from yourdfpy import URDF
 from pathlib import Path 
 
 
@@ -24,7 +24,7 @@ def trimesh_to_open3d(mesh: trimesh.Trimesh) -> o3d.geometry.TriangleMesh:
 
 class RobotMesh:
     def __init__(self, robot_path, mesh_scale=1.0):
-        self.robot = URDF.load(robot_path)
+        self.urdf = URDF.load(robot_path, load_meshes=False, build_scene_graph=False, load_collision_meshes=False)
         self.robot_root = Path(robot_path).parent
         self.collision_meshes = {}
         self.visual_meshes = {}
@@ -66,7 +66,7 @@ class RobotMesh:
         if link_name in self.collision_meshes:
             return self.collision_meshes[link_name].copy()
         
-        link = next((l for l in self.robot.links if l.name == link_name), None)
+        link = next((l for l in self.urdf.robot.links if l.name == link_name), None)
 
         # Extract collision geometry and convert to Trimesh
         if link is not None:
@@ -101,7 +101,7 @@ class RobotMesh:
         if link_name in self.visual_meshes:
             return self.visual_meshes[link_name].copy()
 
-        link = next((l for l in self.robot.links if l.name == link_name), None)
+        link = next((l for l in self.urdf.robot.links if l.name == link_name), None)
         # Extract collision geometry and convert to Trimesh
         if link is not None:
             trimesh_objects = []
@@ -143,7 +143,7 @@ class RobotMesh:
         if link_name in self.collision_meshes:
             return self.collision_meshes[link_name].copy()
         
-        link = next((l for l in self.robot.links if l.name == link_name), None)
+        link = next((l for l in self.urdf.robot.links if l.name == link_name), None)
 
         # Extract collision geometry and convert to Trimesh
         if link is not None:
